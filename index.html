@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: #1877f2;
+            font-size: 40px;
+        }
+
+        .logo h1 {
+            color: #1877f2;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: none;
+            border-radius: 20px;
+            background-color: #f0f2f5;
+            font-size: 14px;
+        }
+
+        .search-bar i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #65676b;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .nav-icon:hover {
+            background-color: #e4e6eb;
+        }
+
+        .nav-icon i {
+            color: #65676b;
+            font-size: 18px;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #1877f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+        }
+
+        /* Left Sidebar */
+        .left-sidebar {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-item:hover {
+            background-color: #f0f2f5;
+        }
+
+        .sidebar-item i {
+            color: #1877f2;
+            font-size: 20px;
+            width: 20px;
+        }
+
+        .sidebar-item span {
+            color: #1c1e21;
+            font-size: 14px;
+        }
+
+        /* Center Feed */
+        .center-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .create-post {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .post-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .post-input img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #1877f2;
+        }
+
+        .post-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 20px;
+            background-color: #f0f2f5;
+            font-size: 14px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .post-action {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .post-action:hover {
+            background-color: #f0f2f5;
+        }
+
+        .post-action i {
+            font-size: 16px;
+        }
+
+        .post-action span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .post {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .post-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #1877f2;
+        }
+
+        .post-info h4 {
+            color: #1c1e21;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .post-info p {
+            color: #65676b;
+            font-size: 12px;
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+        }
+
+        .post-content p {
+            color: #1c1e21;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 300px;
+            background-color: #f0f2f5;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #65676b;
+        }
+
+        .post-stats {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e4e6eb;
+            margin-bottom: 10px;
+        }
+
+        .post-stats span {
+            color: #65676b;
+            font-size: 12px;
+        }
+
+        .post-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .post-button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .post-button:hover {
+            background-color: #f0f2f5;
+        }
+
+        .post-button i {
+            font-size: 16px;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .contacts-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .contacts-header h3 {
+            color: #65676b;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 5px;
+        }
+
+        .contact-item:hover {
+            background-color: #f0f2f5;
+        }
+
+        .contact-item img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #1877f2;
+        }
+
+        .contact-item span {
+            color: #1c1e21;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .left-sidebar, .right-sidebar {
+                display: none;
+            }
+            
+            .header-content {
+                padding: 0 10px;
+            }
+            
+            .search-bar {
+                display: none;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #1c1e21;
+        }
+
+        .close {
+            color: #65676b;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #1c1e21;
+        }
+
+        .modal-body input, .modal-body textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #e4e6eb;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .modal-body textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: #1877f2;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #e4e6eb;
+            color: #1c1e21;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fab fa-facebook"></i>
+                <h1>Facebook</h1>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search Facebook">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="nav-icons">
+                <div class="nav-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-icon">
+                    <i class="fas fa-tv"></i>
+                </div>
+                <div class="nav-icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <div class="nav-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="nav-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <div class="profile-pic">U</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Left Sidebar -->
+        <aside class="left-sidebar">
+            <div class="sidebar-item">
+                <i class="fas fa-user"></i>
+                <span>Your Profile</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-users"></i>
+                <span>Friends</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-bookmark"></i>
+                <span>Saved</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-calendar"></i>
+                <span>Events</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-clock"></i>
+                <span>Memories</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-flag"></i>
+                <span>Pages</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-users"></i>
+                <span>Groups</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-tv"></i>
+                <span>Watch</span>
+            </div>
+        </aside>
+
+        <!-- Center Feed -->
+        <section class="center-feed">
+            <!-- Create Post -->
+            <div class="create-post">
+                <div class="post-input">
+                    <div class="profile-pic">U</div>
+                    <input type="text" placeholder="What's on your mind?" id="postInput">
+                </div>
+                <div class="post-actions">
+                    <div class="post-action" onclick="openModal()">
+                        <i class="fas fa-video"></i>
+                        <span>Live Video</span>
+                    </div>
+                    <div class="post-action" onclick="openModal()">
+                        <i class="fas fa-image"></i>
+                        <span>Photo/Video</span>
+                    </div>
+                    <div class="post-action" onclick="openModal()">
+                        <i class="fas fa-smile"></i>
+                        <span>Feeling/Activity</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posts -->
+            <div class="post">
+                <div class="post-header">
+                    <div class="profile-pic">J</div>
+                    <div class="post-info">
+                        <h4>John Doe</h4>
+                        <p>2 hours ago</p>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Just had an amazing day at the beach! The weather was perfect and the waves were incredible. Can't wait to share more photos! 🌊☀️</p>
+                </div>
+                <div class="post-image">
+                    <i class="fas fa-image" style="font-size: 48px;"></i>
+                </div>
+                <div class="post-stats">
+                    <span>👍 24 likes</span>
+                    <span>💬 5 comments</span>
+                </div>
+                <div class="post-buttons">
+                    <div class="post-button" onclick="likePost(this)">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>Like</span>
+                    </div>
+                    <div class="post-button">
+                        <i class="fas fa-comment"></i>
+                        <span>Comment</span>
+                    </div>
+                    <div class="post-button">
+                        <i class="fas fa-share"></i>
+                        <span>Share</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="profile-pic">S</div>
+                    <div class="post-info">
+                        <h4>Sarah Smith</h4>
+                        <p>5 hours ago</p>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Just finished reading an amazing book! Highly recommend "The Midnight Library" by Matt Haig. It really makes you think about life choices and what could have been. 📚✨</p>
+                </div>
+                <div class="post-stats">
+                    <span>👍 18 likes</span>
+                    <span>💬 3 comments</span>
+                </div>
+                <div class="post-buttons">
+                    <div class="post-button" onclick="likePost(this)">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>Like</span>
+                    </div>
+                    <div class="post-button">
+                        <i class="fas fa-comment"></i>
+                        <span>Comment</span>
+                    </div>
+                    <div class="post-button">
+                        <i class="fas fa-share"></i>
+                        <span>Share</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="profile-pic">M</div>
+                    <div class="post-info">
+                        <h4>Mike Johnson</h4>
+                        <p>1 day ago</p>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Finally got my new gaming setup complete! The RTX 4090 is absolutely insane. Time to test it out with some Cyberpunk 2077! 🎮🔥</p>
+                </div>
+                <div class="post-image">
+                    <i class="fas fa-gamepad" style="font-size: 48px;"></i>
+                </div>
+                <div class="post-stats">
+                    <span>👍 42 likes</span>
+                    <span>💬 12 comments</span>
+                </div>
+                <div class="post-buttons">
+                    <div class="post-button" onclick="likePost(this)">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>Like</span>
+                    </div>
+                    <div class="post-button">
+                        <i class="fas fa-comment"></i>
+                        <span>Comment</span>
+                    </div>
+                    <div class="post-button">
+                        <i class="fas fa-share"></i>
+                        <span>Share</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <div class="contacts-header">
+                <h3>Contacts</h3>
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="contact-item">
+                <div class="profile-pic">A</div>
+                <span>Alice Brown</span>
+            </div>
+            <div class="contact-item">
+                <div class="profile-pic">B</div>
+                <span>Bob Wilson</span>
+            </div>
+            <div class="contact-item">
+                <div class="profile-pic">C</div>
+                <span>Carol Davis</span>
+            </div>
+            <div class="contact-item">
+                <div class="profile-pic">D</div>
+                <span>David Miller</span>
+            </div>
+            <div class="contact-item">
+                <div class="profile-pic">E</div>
+                <span>Emma Taylor</span>
+            </div>
+            <div class="contact-item">
+                <div class="profile-pic">F</div>
+                <span>Frank Anderson</span>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Create Post Modal -->
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Post</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <textarea id="modalPostText" placeholder="What's on your mind?"></textarea>
+                <input type="file" id="postImage" accept="image/*">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="createPost()">Post</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        function openModal() {
+            document.getElementById('postModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('postModal').style.display = 'none';
+            document.getElementById('modalPostText').value = '';
+            document.getElementById('postImage').value = '';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('postModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Create new post
+        function createPost() {
+            const postText = document.getElementById('modalPostText').value;
+            if (postText.trim() === '') {
+                alert('Please write something to post!');
+                return;
+            }
+
+            const centerFeed = document.querySelector('.center-feed');
+            const createPostDiv = document.querySelector('.create-post');
+            
+            const newPost = document.createElement('div');
+            newPost.className = 'post';
+            newPost.innerHTML = `
+                <div class="post-header">
+                    <div class="profile-pic">U</div>
+                    <div class="post-info">
+                        <h4>You</h4>
+                        <p>Just now</p>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>${postText}</p>
+                </div>
+                <div class="post-stats">
+                    <span>👍 0 likes</span>
+                    <span>💬 0 comments</span>
+                </div>
+                <div class="post-buttons">
+                    <div class="post-button" onclick="likePost(this)">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>Like</span>
+                    </div>
+                    <div class="post-button">
+                        <i class="fas fa-comment"></i>
+                        <span>Comment</span>
+                    </div>
+                    <div class="post-button">
+                        <i class="fas fa-share"></i>
+                        <span>Share</span>
+                    </div>
+                </div>
+            `;
+
+            centerFeed.insertBefore(newPost, createPostDiv.nextSibling);
+            closeModal();
+        }
+
+        // Like post functionality
+        function likePost(button) {
+            const likeIcon = button.querySelector('i');
+            const likeText = button.querySelector('span');
+            
+            if (likeIcon.classList.contains('fas')) {
+                likeIcon.classList.remove('fas');
+                likeIcon.classList.add('far');
+                likeText.textContent = 'Like';
+                button.style.color = '#65676b';
+            } else {
+                likeIcon.classList.remove('far');
+                likeIcon.classList.add('fas');
+                likeText.textContent = 'Liked';
+                button.style.color = '#1877f2';
+            }
+        }
+
+        // Search functionality
+        document.querySelector('.search-bar input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                alert('Searching for: ' + this.value);
+                this.value = '';
+            }
+        });
+
+        // Post input functionality
+        document.getElementById('postInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                openModal();
+                document.getElementById('modalPostText').value = this.value;
+                this.value = '';
+            }
+        });
+
+        // Add some interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to sidebar items
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    alert('You clicked: ' + this.querySelector('span').textContent);
+                });
+            });
+
+            // Add click functionality to contact items
+            const contactItems = document.querySelectorAll('.contact-item');
+            contactItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    alert('Starting video call with: ' + this.querySelector('span').textContent);
+                });
+            });
+
+            // Add functionality to nav icons
+            const navIcons = document.querySelectorAll('.nav-icon');
+            navIcons.forEach(icon => {
+                icon.addEventListener('click', function() {
+                    const iconName = this.querySelector('i').className.split(' ')[1];
+                    alert('You clicked: ' + iconName);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
